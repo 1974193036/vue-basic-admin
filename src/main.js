@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import 'normalize.css/normalize.css' // A modern alternative to CSS resets
+import 'normalize.css/normalize.css' // A  modern alternative to CSS resets
 
 import ElementUI from 'element-ui'
 import './styles/element-variables.scss' // 自定义element-ui的样式
