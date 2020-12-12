@@ -27,6 +27,11 @@ import Cookies from 'js-cookie'
  */
 import { mockXHR } from '../mock'
 
+// import ssyButton from 'ssyy-button'
+// import ssySteps from 'ssyy-steps'
+// Vue.use(ssyButton)
+// Vue.use(ssySteps)
+
 if (process.env.NODE_ENV === 'production') {
   mockXHR()
 }
@@ -47,7 +52,7 @@ Vue.config.productionTip = false
 
 new Vue({
   el: '#app',
-  router,
+  router, // 3. 注册router对象，给vm实例添加 $route $router
   store,
   i18n,
   render: h => h(App)

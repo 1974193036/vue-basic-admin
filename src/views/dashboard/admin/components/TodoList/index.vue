@@ -106,7 +106,7 @@ export default {
       this.setLocalStorage()
     },
     toggleTodo(todo) {
-      todo.done = !todo.done // 改变了this.todos
+      todo.done = !todo.done
       this.setLocalStorage()
     },
     deleteTodo(todo) {

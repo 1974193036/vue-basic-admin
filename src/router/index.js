@@ -3,6 +3,7 @@ import Router from 'vue-router'
 /* Layout */
 import Layout from '@/layout'
 
+// 1. 注册路由插件，如果参数是函数，调用函数方法，如果参数是对象，调用对象内的install方法来注册插件
 Vue.use(Router)
 
 /**
@@ -30,6 +31,7 @@ Vue.use(Router)
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
+// 路由规则
 export const constantRoutes = [
   {
     path: '/redirect',
@@ -66,6 +68,17 @@ export const constantRoutes = [
     }]
   },
   {
+    path: '/echart-demo',
+    component: Layout,
+    redirect: '/dashboard',
+    children: [{
+      path: 'index',
+      name: 'Echart',
+      meta: { title: 'Echart', icon: 'dashboard', affix: true },
+      component: () => import('@/views/echart-demo/index')
+    }]
+  },
+  {
     path: '/example',
     component: Layout,
     redirect: '/example/table',
@@ -77,6 +90,20 @@ export const constantRoutes = [
         name: 'Table',
         component: () => import('@/views/table/index'),
         meta: { title: 'Table', icon: 'table' }
+      },
+      {
+        path: 'table/create',
+        name: 'table-create',
+        hidden: true,
+        component: () => import('@/views/table/create'),
+        meta: { title: 'Table新增', activeMenu: '/example/table' }
+      },
+      {
+        path: 'table/edit/:id',
+        name: 'table-edit',
+        hidden: true,
+        component: () => import('@/views/table/edit'),
+        meta: { title: 'Table修改', activeMenu: '/example/table' }
       },
       {
         path: 'tree',
@@ -144,12 +171,58 @@ export const constantRoutes = [
         meta: { title: 'External Link', icon: 'link' }
       }
     ]
-  },
-  {
-    path: '*',
-    redirect: '/404',
-    hidden: true
   }
+]
+
+export const asyncRoutes = [
+  {
+    path: '/permission',
+    component: Layout,
+    redirect: '/permission/page',
+    alwaysShow: true, // will always show the root menu
+    name: 'Permission',
+    meta: {
+      title: 'Permission',
+      icon: 'lock',
+      roles: ['admin', 'editor'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'page',
+        component: () => import('@/views/permission/page'),
+        name: 'PagePermission',
+        meta: {
+          title: '页面权限',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: 'directive',
+        component: () => import('@/views/permission/directive'),
+        name: 'DirectivePermission',
+        meta: {
+          title: '指令权限'
+          // if do not set roles, means: this page does not require permission
+        }
+      },
+      {
+        path: 'role',
+        component: () => import('@/views/permission/role'),
+        name: '角色权限',
+        meta: {
+          title: 'Role Permission',
+          roles: ['admin']
+        }
+      }
+    ]
+  },
+  // 404 page must be placed at the end !!!
+  // { path: '*', redirect: '/404', hidden: true }
+]
+
+export const lastRoutes = [
+  // 404 page must be placed at the end !!!
+  { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({
@@ -158,6 +231,7 @@ const createRouter = () => new Router({
   routes: constantRoutes
 })
 
+// 2. 创建router对象
 const router = createRouter()
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465

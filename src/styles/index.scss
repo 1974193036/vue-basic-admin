@@ -136,3 +136,32 @@ aside {
 .text-center {
   text-align: center
 }
+
+.status {
+  display: inline-block;
+  cursor: pointer;
+  width: .875rem;
+  height: .875rem;
+  vertical-align: middle;
+  border-radius: 50%;
+
+  &-primary {
+    background: $light-blue;
+  }
+
+  &-success {
+    background: $green;
+  }
+
+  &-warning {
+    background: $yellow;
+  }
+
+  &-danger {
+    background: $red;
+  }
+
+  &-info {
+    background: $blue;
+  }
+}

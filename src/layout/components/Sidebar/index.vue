@@ -12,7 +12,7 @@
         :collapse-transition="false"
         mode="vertical"
       >
-        <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" />
+        <sidebar-item v-for="route in permission_routes" :key="route.path" :item="route" :base-path="route.path" />
       </el-menu>
     </el-scrollbar>
   </div>
@@ -31,7 +31,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'sidebar'
+      'sidebar',
+      'permission_routes'
     ]),
     showLogo() {
       return this.$store.state.settings.sidebarLogo
@@ -50,10 +51,10 @@ export default {
       }
       return path // 比如 /dashboard，/example/table， /form/index
     },
-    routes() {
-      // console.log(this.$router.options.routes)
-      return this.$router.options.routes
-    }
+    // routes() {
+    //   // console.log(this.$router.options)
+    //   // return this.$router.options.routes
+    // }
   }
 }
 </script>

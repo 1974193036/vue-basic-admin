@@ -5,6 +5,9 @@ const state = {
 
 const mutations = {
   ADD_VISITED_VIEW: (state, view) => {
+    // console.log(state.visitedViews, view)
+    // if (state.visitedViews.some(v => v.meta.title === view.meta.title)) return
+    // if (state.visitedViews.some(v => view.path.includes(v.path))) return
     if (state.visitedViews.some(v => v.path === view.path)) return
     state.visitedViews.push(
       Object.assign({}, view, {

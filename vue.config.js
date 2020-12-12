@@ -29,6 +29,21 @@ module.exports = {
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
+  css: {
+    loaderOptions: { // 向预处理器 loader 传递选项
+      // 默认情况下 `sass` 选项会同时对 `sass` 和 `scss` 语法同时生效
+      // 因为 `scss` 语法在内部也是由 sass-loader 处理的
+      // 但是在配置 `prependData` 选项的时候
+      // `scss` 语法会要求语句结尾必须有分号，`sass` 则要求必须没有分号
+      // 在这种情况下，我们可以使用 `scss` 选项，对 `scss` 语法进行单独配置
+      sass: {
+        // 重点：在打包 scss 的时候会自动注入这行代码，即自动注入variables内的变量
+        prependData: `@import "~@/styles/variables.scss";` // css 里要加~符号才能使用@目录
+        // 所有 Sass/Less 样式传入共享的全局变量
+        // 然后就可以在任意组件中使用全局样式变量了
+      }
+    }
+  },
   devServer: {
     port: port,
     open: true,

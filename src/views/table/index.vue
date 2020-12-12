@@ -1,5 +1,9 @@
 <template>
   <div class="app-container">
+    <span class="test">test</span>
+    <input />
+    <el-button type="primary" @click="add">新增</el-button>
+    <el-button type="primary" @click="edit">编辑</el-button>
     <el-table
       v-loading="listLoading"
       :data="tableData"
@@ -37,14 +41,26 @@
         {{ 1563807494000 | parseTime('{y}-{m}-{d} {h}:{i}') }}
       </el-table-column>
 
-      <el-table-column class-name="status-col" label="Status" width="110" align="center">
+      <el-table-column
+        class-name="status-col"
+        label="Status"
+        width="110"
+        align="center"
+      >
         <template slot-scope="scope">
           <!--<el-tag :type="scope.row.status | statusFilter">{{ scope.row.status | textFilter }}</el-tag>-->
-          <el-tag :type="statusMap[scope.row.status].color">{{ statusMap[scope.row.status].text }}</el-tag>
+          <el-tag :type="statusMap[scope.row.status].color">{{
+            statusMap[scope.row.status].text
+          }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" prop="created_at" label="Display_time" width="200">
+      <el-table-column
+        align="center"
+        prop="created_at"
+        label="Display_time"
+        width="200"
+      >
         <template slot-scope="scope">
           <i class="el-icon-time" />
           <span>{{ scope.row.display_time }}</span>
@@ -55,6 +71,7 @@
 </template>
 <script>
 import { getList } from '@/api/table'
+import Bus from '@/eventBus'
 
 export default {
   name: 'Table',
@@ -89,27 +106,46 @@ export default {
   },
   created() {
     this.fetchData()
+    Bus.$on('load', (val) => {
+      // if (val.type ==='create') {
+      //   console.log('页码回到1')
+      // }
+      this.fetchData()
+    })
   },
   methods: {
     // 获取列表数据
     async fetchData() {
-      // this.listLoading = true // 显示loading
-      // const res = await getList()
-      // this.tableData = res.data.items
-      // this.listLoading = false
-      try {
-        this.listLoading = true
-        const res = await getList()
-        this.tableData = res.data.items
-        this.listLoading = false // 获取数据后不显示loading
-      } catch (err) {
-        this.tableData = []
-        this.listLoading = false // 如果接口异常不显示loading
-      }
+      this.listLoading = true // 显示loading
+      const res = await getList()
+      this.tableData = res.data.items
+      this.listLoading = false
+      // try {
+      //   this.listLoading = true
+      //   const res = await getList()
+      //   this.tableData = res.data.items
+      //   this.listLoading = false // 获取数据后不显示loading
+      // } catch (err) {
+      //   this.tableData = []
+      //   this.listLoading = false // 如果接口异常不显示loading
+      // }
+    },
+    add() {
+      this.$router.push({
+        name: 'table-create'
+      })
+    },
+    edit() {
+      this.$router.push({
+        name: 'table-edit',
+        params: { id: '123' }
+      })
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-
+.test {
+  color: $pink;
+}
 </style>

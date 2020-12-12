@@ -70,7 +70,9 @@ export default {
   methods: {
     generateTitle,
     isActive(route) {
+      // console.log(route, this.$route.path)
       return route.path === this.$route.path
+      // return this.$route.path.includes(route.path)
     },
     filterAffixTags(routes, basePath = '/') {
       let tags = []

@@ -1,4 +1,4 @@
-import router from '@/router'
+import router, { resetRouter } from '@/router'
 import { getToken } from '@/utils/auth'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -10,7 +10,7 @@ NProgress.configure({ showSpinner: false })
 
 const whiteList = ['/login']
 
-router.beforeEach(async(to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   // start progress bar
   NProgress.start()
 
@@ -30,14 +30,26 @@ router.beforeEach(async(to, from, next) => {
       next({ path: '/' })
       NProgress.done()
     } else {
-      const hasGetUserInfo = store.getters.name
-      if (hasGetUserInfo) {
+      // const hasGetUserInfo = store.getters.name
+      const hasRoles = store.getters.roles && store.getters.roles.length > 0
+      if (hasRoles) {
         next()
       } else {
         // 刚登录后和刷新页面情况下获取用户信息
         try {
-          await store.dispatch('user/getInfo')
-          next()
+          const { roles, menuList } = await store.dispatch('user/getInfo')
+          // console.log(roles) // ['admin'] ['editor']
+
+          // generate accessible routes map based on roles
+          const accessRoutes = await store.dispatch('permission/generateRoutes', { roles, menuList })
+
+          // dynamically add accessible routes
+          router.addRoutes(accessRoutes)
+
+          // next()
+          // hack method to ensure that addRoutes is complete
+          // set the replace: true, so the navigation will not leave a history record
+          next({ ...to, replace: true })
         } catch (err) {
           await store.dispatch('user/resetToken')
           next(`/login?redirect=${to.path}`)

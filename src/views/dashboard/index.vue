@@ -23,6 +23,7 @@ export default {
     ])
   },
   created() {
+    // console.log(this.name)
     if (this.name !== 'Super Admin') {
       this.currentRole = 'editorDashboard'
     }

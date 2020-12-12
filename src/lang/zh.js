@@ -25,6 +25,7 @@ export default {
     dragKanban: '可拖拽看板',
     charts: '图表',
     keyboardChart: '键盘图表',
+    echart: '图表测试',
     lineChart: '折线图',
     mixChart: '混合图表',
     example: '综合实例',

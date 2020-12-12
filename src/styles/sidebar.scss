@@ -52,8 +52,13 @@
       overflow: hidden;
     }
 
-    .svg-icon {
+    .svg-icon, i {
       margin-right: 16px;
+    }
+
+    i {
+      margin-left: -5px;
+      margin-right: 10px;
     }
 
     .el-menu {
